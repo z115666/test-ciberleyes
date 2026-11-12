@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-rgoDZnrBB+ngZEB/rMwHcxtkMTre6UJkIj+qtgxFGYw='; style-src 'sha256-CAeQ7KPS+NBlSAmHvlMmmM3Jt/bHW4CtZ5ST0egAYIQ=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>¿Te protege la ley? · El rincón de Alberto y Leti</title>
+<meta name="description" content="Test interactivo sobre el Cyber Resilience Act y la Directiva NIS2: qué te protege, qué se queda fuera y cuánto haces tú.">
+<meta name="author" content="Alberto · El rincón de Alberto y Leti">
+<meta property="og:title" content="¿Te protege la ley?">
+<meta property="og:description" content="Test interactivo sobre el CRA y la NIS2. Mide tu nivel de protección sobre 15.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z' fill='%231f2a44'/%3E%3Cpath d='M8.5 12l2.5 2.5 4.5-5' stroke='%238fd3cf' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap">
+<style>
+/* Layout: una columna de lectura (~760px) con tres estaciones: aparato (CRA), servicios (NIS2) y tu marcador final */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --ink:#1b2438; --muted:#5a6476; --line:#dfe3e8;
+  --navy:#1f2a44; --navy-ink:#ffffff; --teal:#1e7a78; --teal-soft:#e3f1f0; --mint:#8fd3cf;
+  --ok:#1e7a78; --ok-soft:#e3f1f0; --mid:#a8640a; --mid-soft:#fff2dc; --no:#b0461c; --no-soft:#fcebe2;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1420; --surface:#171e2d; --ink:#e7ebf2; --muted:#9aa4b5; --line:#2a3346;
+  --navy:#24314f; --navy-ink:#ffffff; --teal:#4fb3ae; --teal-soft:#16302f; --mint:#8fd3cf;
+  --ok:#4fb3ae; --ok-soft:#16302f; --mid:#e2a344; --mid-soft:#33270f; --no:#ec8a62; --no-soft:#3a1e14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1420; --surface:#171e2d; --ink:#e7ebf2; --muted:#9aa4b5; --line:#2a3346;
+  --navy:#24314f; --navy-ink:#ffffff; --teal:#4fb3ae; --teal-soft:#16302f; --mint:#8fd3cf;
+  --ok:#4fb3ae; --ok-soft:#16302f; --mid:#e2a344; --mid-soft:#33270f; --no:#ec8a62; --no-soft:#3a1e14; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:760px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,2.9rem);letter-spacing:-.02em}
+h2{font-size:1.6rem;letter-spacing:-.01em}
+h3{font-size:1.1rem}
+p{margin:0}
+.eyebrow{font-family:var(--display);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.lead{color:var(--muted);max-width:60ch}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;padding-block:44px 32px}
+.hero-text{display:grid;gap:14px;min-width:0}
+.label{width:200px;background:var(--surface);border:2px solid var(--ink);border-radius:10px;padding:14px;font-size:.8rem;display:grid;gap:8px;transform:rotate(2deg)}
+.label .row{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.label .row:last-child{border:0;padding:0}
+.label b{font-family:var(--display)}
+.label .ce{font-family:var(--display);font-size:1.6rem;font-weight:700;letter-spacing:-.04em}
+.label .until{font-family:var(--display);font-size:1.25rem;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums}
+
+/* Score bar */
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--navy);color:var(--navy-ink);border-radius:var(--r);padding:12px 18px;display:flex;align-items:center;gap:16px;margin-bottom:36px;box-shadow:0 6px 20px rgba(15,20,32,.18)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.score strong{font-family:var(--display);font-size:1.4rem;font-variant-numeric:tabular-nums;min-width:4.5ch}
+.bar{flex:1;height:10px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--mint);border-radius:99px;transition:width .4s ease}
+.score small{opacity:.8;white-space:nowrap}
+
+section{display:grid;gap:18px;margin-bottom:48px}
+.sec-head{display:grid;gap:8px}
+
+/* Flip cards */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{appearance:none;border:0;padding:0;background:none;cursor:pointer;perspective:1000px;min-height:180px;text-align:left;font:inherit;color:inherit}
+.card .in{position:relative;display:block;height:100%;min-height:180px;transition:transform .55s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.card[aria-pressed="true"] .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:var(--r);padding:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.front{background:var(--navy);color:var(--navy-ink)}
+.front .n{font-family:var(--display);font-weight:700;color:var(--mint);font-size:2rem;line-height:1}
+.front h3{font-size:1.15rem}
+.front small{opacity:.7;font-size:.8rem}
+.back{background:var(--teal-soft);color:var(--ink);transform:rotateY(180deg);font-size:.95rem;line-height:1.5;justify-content:center}
+.card:hover .front{box-shadow:0 10px 24px rgba(15,20,32,.22)}
+.card:focus-visible{outline:3px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+
+/* Checklists */
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px}
+.check label{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:10px;cursor:pointer;transition:background .2s}
+.check label:hover{background:var(--bg)}
+.check input{appearance:none;flex:none;width:22px;height:22px;margin-top:1px;border:2px solid var(--muted);border-radius:6px;display:grid;place-content:center;cursor:pointer;background:var(--surface)}
+.check input::after{content:"";width:11px;height:6px;border-left:2.5px solid var(--navy-ink);border-bottom:2.5px solid var(--navy-ink);transform:rotate(-45deg) translate(1px,-1px);opacity:0}
+.check input:checked{background:var(--teal);border-color:var(--teal)}
+.check input:checked::after{opacity:1}
+.check input:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.check label:has(input:checked){background:var(--teal-soft)}
+.check strong{font-weight:600}
+.tally{display:flex;justify-content:space-between;align-items:center;padding:12px 14px 6px;color:var(--muted);font-size:.9rem}
+.tally b{font-family:var(--display);color:var(--ink);font-size:1.05rem;font-variant-numeric:tabular-nums}
+
+/* NIS2 selector */
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.opt{appearance:none;border:2px solid transparent;background:var(--navy);color:var(--navy-ink);border-radius:12px;padding:14px 8px;font:600 .9rem/1.25 var(--body);cursor:pointer;display:grid;gap:6px;justify-items:center;text-align:center;transition:transform .15s,background .2s}
+.opt svg{width:26px;height:26px;stroke:var(--mint);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.opt:hover{transform:translateY(-2px)}
+.opt[aria-pressed="true"]{background:var(--teal);border-color:var(--mint)}
+.opt:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.verdict{border-radius:var(--r);padding:16px 18px;display:grid;gap:4px;min-height:96px;background:var(--surface);border:1px solid var(--line);transition:background .25s}
+.verdict .tag{font-family:var(--display);font-weight:700;font-size:1.1rem}
+.verdict[data-v="ok"]{background:var(--ok-soft);border-color:var(--ok)} .verdict[data-v="ok"] .tag{color:var(--ok)}
+.verdict[data-v="mid"]{background:var(--mid-soft);border-color:var(--mid)} .verdict[data-v="mid"] .tag{color:var(--mid)}
+.verdict[data-v="no"]{background:var(--no-soft);border-color:var(--no)} .verdict[data-v="no"] .tag{color:var(--no)}
+.seen{font-size:.85rem;color:var(--muted)}
+
+/* Clock */
+.clock{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;background:var(--navy);color:var(--navy-ink);border-radius:var(--r);overflow:hidden}
+.clock div{padding:18px;display:grid;gap:4px;border-left:1px solid rgba(255,255,255,.12)}
+.clock div:first-child{border:0}
+.clock .t{font-family:var(--display);font-weight:700;font-size:2rem;color:var(--mint);line-height:1;font-variant-numeric:tabular-nums}
+.clock small{opacity:.78;line-height:1.45}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vs div{border-radius:var(--r);padding:16px;display:grid;gap:4px;font-size:.95rem}
+.vs .a{background:var(--ok-soft)} .vs .b{background:var(--no-soft)}
+
+/* Final */
+.final{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:10px}
+.final .big{font-family:var(--display);font-size:2.6rem;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{appearance:none;border:2px solid var(--teal);background:transparent;color:var(--teal);border-radius:99px;padding:9px 18px;font:600 .9rem var(--body);cursor:pointer;text-decoration:none}
+.btn.solid{background:var(--teal);color:var(--navy-ink)}
+.btn:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+footer{color:var(--muted);font-size:.85rem;display:grid;gap:6px;border-top:1px solid var(--line);padding-top:20px}
+footer a{color:var(--teal)}
+
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr}.label{transform:none;width:100%;max-width:280px}
+  .cards{grid-template-columns:1fr}.opts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .clock,.vs{grid-template-columns:1fr}.clock div{border-left:0;border-top:1px solid rgba(255,255,255,.12)}.clock div:first-child{border:0}
+  .score small{display:none}
+}
+@media (prefers-reduced-motion:reduce){.card .in,.bar i,.opt{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">El rincón de Alberto y Leti · Ciberseguridad</span>
+      <h1>¿Te protege la ley?</h1>
+      <p class="lead">Dos normas europeas deciden cuánto de seguro es lo que enchufas en casa y los servicios de los que dependes. Descubre qué cubren, qué se queda fuera y cuánto haces tú.</p>
+    </div>
+    <div class="label" aria-label="Ejemplo de la información que exigirá el CRA en un producto">
+      <div class="row"><b>Cámara IP</b><span class="ce">CE</span></div>
+      <div class="row"><span>Soporte de seguridad hasta</span></div>
+      <div class="row"><span class="until">12 / 2032</span></div>
+      <div class="row"><span style="color:var(--muted)">Ejemplo de lo que verás desde 2027</span></div>
+    </div>
+  </header>
+
+  <div class="score" role="status" aria-live="polite">
+    <strong id="pts">0/15</strong>
+    <div class="bar" aria-hidden="true"><i id="fill"></i></div>
+    <small id="lvl">Tu nivel de protección</small>
+  </div>
+
+  <section aria-labelledby="s1">
+    <div class="sec-head">
+      <span class="eyebrow">Cyber Resilience Act · Reglamento (UE) 2024/2847</span>
+      <h2 id="s1">Lo que enchufas en casa</h2>
+      <p class="lead">Desde el 11 de diciembre de 2027, todo producto conectado deberá venir seguro de fábrica y decirte hasta cuándo tendrá parches. Pulsa cada tarjeta.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+    <h3>Decálogo CRA: ¿cuántas cumples?</h3>
+    <div class="check" id="cra"></div>
+  </section>
+
+  <section aria-labelledby="s2">
+    <div class="sec-head">
+      <span class="eyebrow">Directiva NIS2 · Directiva (UE) 2022/2555</span>
+      <h2 id="s2">¿Está obligado por la NIS2?</h2>
+      <p class="lead">Elige un servicio. La directiva obliga a los sectores esenciales a protegerse y a avisar de los ataques. Adivina dónde queda el colegio.</p>
+    </div>
+    <div class="opts" id="opts" role="group" aria-label="Servicios"></div>
+    <div class="verdict" id="verdict" aria-live="polite"><span class="tag">Elige un servicio</span><span>La respuesta aparecerá aquí.</span></div>
+    <p class="seen" id="seen">Has consultado 0 de 8.</p>
+
+    <h3>El reloj tras un ciberataque</h3>
+    <div class="clock">
+      <div><span class="t">24 h</span><strong>Alerta temprana</strong><small>Avisar a la autoridad de que algo grave está pasando.</small></div>
+      <div><span class="t">72 h</span><strong>Notificación</strong><small>Primera evaluación: gravedad, impacto e indicadores.</small></div>
+      <div><span class="t">1 mes</span><strong>Informe final</strong><small>Causa, consecuencias y medidas adoptadas.</small></div>
+    </div>
+    <div class="vs">
+      <div class="a"><strong>Tu banco</strong>Debe avisar en 24 horas y su dirección responde personalmente. Multas de hasta 10 millones de euros o el 2 % de su facturación.</div>
+      <div class="b"><strong>El colegio de tu hijo</strong>Sin obligaciones NIS2. Solo debe comunicar a la AEPD en 72 horas una brecha de datos personales.</div>
+    </div>
+
+    <h3>5 cosas que sí puedes hacer tú</h3>
+    <div class="check" id="nis"></div>
+  </section>
+
+  <section aria-labelledby="s3">
+    <div class="final">
+      <span class="eyebrow">Tu resultado</span>
+      <span class="big" id="bigpts">0/15</span>
+      <h2 id="s3">Empieza a marcar</h2>
+      <p id="msg" class="lead">Marca en los dos decálogos lo que ya haces y aquí verás tu nivel.</p>
+      <div class="actions">
+        <a class="btn solid" href="https://elrincondealbertoyleti.com/" target="_blank" rel="noopener">Volver al blog</a>
+        <button class="btn" id="reset" type="button">Empezar de nuevo</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Actualizado a noviembre de 2026. La situación de la ley española de trasposición de la NIS2 puede cambiar tras las elecciones del 29 de noviembre.</p>
+    <p>Fuentes: <a href="https://eur-lex.europa.eu/eli/reg/2024/2847/oj" target="_blank" rel="noopener">Reglamento (UE) 2024/2847</a> · <a href="https://eur-lex.europa.eu/eli/dir/2022/2555/oj" target="_blank" rel="noopener">Directiva (UE) 2022/2555</a> · <a href="https://www.incibe.es/incibe-cert/sectores-estrategicos/NIS2-necesitas-saber" target="_blank" rel="noopener">INCIBE</a>. Ayuda en ciberseguridad: 017 (INCIBE, gratuito y confidencial).</p>
+  </footer>
+</div>
+<script>
+(function(){
+  const cards=[
+    ["1","Mira el periodo de soporte","Si no aparece o es muy corto, es una señal de alerta. A igualdad de precio, gana el que más años de actualizaciones garantiza."],
+    ["2","Fuera las contraseñas por defecto","Cámbialas el primer día. Desde 2027 no deberían existir, pero los dispositivos que ya tienes en casa sí las llevan. Así se coló Mirai en 2016."],
+    ["3","Actualiza siempre","El CRA obliga al fabricante a ofrecer parches gratuitos, pero instalarlos depende de ti. Activa las actualizaciones automáticas."],
+    ["4","Aísla lo inteligente","Conecta cámaras, enchufes y bombillas a la red de invitados del router, lejos del ordenador del trabajo o del banco."]];
+  const cra=[
+    ["Mira el periodo de soporte antes de comprar.","Si no aparece o es muy corto, desconfía."],
+    ["Compra a fabricantes identificables,","con marcado CE y una dirección de contacto en la UE."],
+    ["Cambia cualquier contraseña por defecto","el primer día."],
+    ["Activa las actualizaciones automáticas","y no las pospongas."],
+    ["Registra el producto","o suscríbete a los avisos del fabricante."],
+    ["Separa los dispositivos inteligentes","en la red de invitados."],
+    ["Apaga lo que no uses:","acceso remoto, UPnP, micrófono o cámara."],
+    ["Revisa la aplicación asociada","y sus permisos: también forma parte del producto."],
+    ["Planifica el relevo","cuando termine el soporte: sin parches, es un riesgo aunque funcione."],
+    ["Si encuentras un fallo, avisa","al fabricante o a INCIBE-CERT, y guarda la factura."]];
+  const nis=[
+    ["Activa la autenticación en dos pasos","en tu banco, tu portal de salud y tus suministros."],
+    ["Usa contraseñas distintas","para cada servicio, con un gestor de contraseñas."],
+    ["Desconfía del phishing oportunista:","tras un ataque en prensa, entra siempre por la aplicación o la web oficial."],
+    ["Lee los avisos de incidentes:","si tus datos se han expuesto, la empresa debe decírtelo."],
+    ["Ante cualquier duda, llama al 017,","la línea gratuita y confidencial de INCIBE."]];
+  const ic={
+    hosp:'<path d="M12 5v14M5 12h14"/><rect x="3" y="3" width="18" height="18" rx="3"/>',
+    bank:'<path d="M3 10h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18M12 3l9 5H3z"/>',
+    power:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+    water:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    box:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+    cloud:'<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/>',
+    uni:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    school:'<path d="M3 21V10l9-6 9 6v11"/><path d="M9 21v-6h6v6M12 4v3"/>'};
+  const svc=[
+    ["Hospital","hosp","ok","Sí, sector de alta criticidad","La sanidad está en el anexo I. Si es mediano o grande, debe gestionar sus riesgos y avisar de un incidente grave en 24 horas."],
+    ["Banco","bank","ok","Sí, y por partida doble","La banca está en la NIS2 y, además, tiene su propia norma específica, el reglamento DORA, aplicable desde enero de 2025."],
+    ["Eléctrica","power","ok","Sí, sector de alta criticidad","La energía está en el anexo I. Un apagón provocado por un ciberataque es justo lo que la directiva quiere evitar."],
+    ["Agua","water","ok","Sí, sector de alta criticidad","El agua potable y las aguas residuales están en el anexo I."],
+    ["Mensajería","box","mid","Sí, como entidad importante","Los servicios postales y de mensajería están en el anexo II: obligaciones algo más ligeras y supervisión solo cuando hay indicios de incumplimiento."],
+    ["Proveedor de nube","cloud","ok","Sí, infraestructura digital","La computación en la nube y los centros de datos están en el anexo I. Por eso un colegio se beneficia indirectamente si su proveedor es grande."],
+    ["Universidad","uni","mid","Depende del país","Por defecto, no: la directiva excluye los centros de enseñanza (considerando 39). Pero cada Estado puede incluir a las universidades, sobre todo si hacen investigación crítica."],
+    ["Colegio","school","no","No","La NIS2 deja fuera los centros de enseñanza, aunque guarden datos de salud, de alergias o de necesidades especiales de cientos de menores. Solo le aplican el RGPD y la LOPDGDD y, si es público, el Esquema Nacional de Seguridad."]];
+
+  const $=s=>document.querySelector(s);
+  const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  $("#cards").innerHTML=cards.map(([n,t,b])=>`<button class="card" type="button" aria-pressed="false"><span class="in"><span class="face front"><span class="n">${n}</span><span><h3>${esc(t)}</h3><small>Pulsa para ver por qué</small></span></span><span class="face back">${esc(b)}</span></span></button>`).join("");
+  document.querySelectorAll(".card").forEach(c=>c.addEventListener("click",()=>c.setAttribute("aria-pressed",c.getAttribute("aria-pressed")==="true"?"false":"true")));
+
+  const list=(el,items,pre)=>{el.innerHTML=items.map(([s,r],i)=>`<label for="${pre}${i}"><input type="checkbox" id="${pre}${i}"><span><strong>${esc(s)}</strong> ${esc(r)}</span></label>`).join("")+`<div class="tally"><span>Las que ya haces</span><b id="${pre}t">0 de ${items.length}</b></div>`};
+  list($("#cra"),cra,"c"); list($("#nis"),nis,"n");
+
+  const seen=new Set();
+  $("#opts").innerHTML=svc.map(([n,k],i)=>`<button class="opt" type="button" aria-pressed="false" data-i="${i}"><svg viewBox="0 0 24 24" aria-hidden="true">${ic[k]}</svg>${esc(n)}</button>`).join("");
+  $("#opts").addEventListener("click",e=>{
+    const b=e.target.closest(".opt"); if(!b) return;
+    document.querySelectorAll(".opt").forEach(o=>o.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    const [n,,v,tag,txt]=svc[+b.dataset.i]; seen.add(n);
+    const sym={ok:"✓",mid:"◐",no:"✕"}[v];
+    const vd=$("#verdict"); vd.dataset.v=v;
+    vd.innerHTML=`<span class="tag">${sym} ${esc(n)}: ${esc(tag)}</span><span>${esc(txt)}</span>`;
+    $("#seen").textContent=seen.size===8?"Los has visto todos. Solo uno se queda fuera del todo: el colegio.":`Has consultado ${seen.size} de 8.`;
+  });
+
+  const levels=[[0,"Empieza a marcar","Marca en los dos decálogos lo que ya haces y aquí verás tu nivel."],
+    [1,"Puerta abierta","Tienes margen de mejora. Empieza por lo más fácil: cambia las contraseñas por defecto y activa la verificación en dos pasos."],
+    [6,"En buen camino","Ya tienes la base. Revisa los dispositivos sin soporte y separa los inteligentes en la red de invitados."],
+    [11,"Casa blindada","Muy bien. Haces más de lo que hoy exige la ley a muchas organizaciones, incluidos los colegios."],
+    [15,"Ciberresiliente","Lo cumples todo. Ahora toca contarlo: comparte esta página con quien más lo necesite."]];
+  function update(){
+    const c=document.querySelectorAll("#cra input:checked").length, n=document.querySelectorAll("#nis input:checked").length, t=c+n;
+    $("#ct").textContent=`${c} de 10`; $("#nt").textContent=`${n} de 5`;
+    $("#pts").textContent=$("#bigpts").textContent=`${t}/15`;
+    $("#fill").style.width=(t/15*100)+"%";
+    let L=levels[0]; for(const l of levels) if(t>=l[0]) L=l;
+    $("#s3").textContent=L[1]; $("#msg").textContent=L[2]; $("#lvl").textContent=t?L[1]:"Tu nivel de protección";
+  }
+  document.addEventListener("change",e=>{if(e.target.matches(".check input")) update()});
+  $("#reset").addEventListener("click",()=>{document.querySelectorAll(".check input").forEach(i=>i.checked=false);document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","false"));update();window.scrollTo({top:0,behavior:"smooth"})});
+  update();
+})();
+</script>
+</body>
+</html>
